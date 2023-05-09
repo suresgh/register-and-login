@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>User Table</title>
+  </head>
+  <body >
+    <div id="a">  <a href="index.html">Logout</a></div>
+    <table>
+      <thead>
+        <tr>
+          <h1>USERS LIST  </h1>
+          <th>Userid</th>
+          <th>Username</th>
+          <th>Email</th>
+          <th>PhoneNumber</th>
+          <th>City</th>
+          <th>State</th>
+          <th>Password</th>
+        </tr>
+      </thead>
+      <tbody id="tablecontainer"></tbody>
+    </table>
+  </body>
+    <script>  
+        var tableContainer = document.getElementById("tablecontainer");
+        fetch("http://localhost:8080/api/users")
+          .then((response) => response.json())
+          .then((users) => {
+
+            users.forEach((user) => {
+             
+              var row = document.createElement("tr");
+              
+              var idCell = document.createElement("td");
+              idCell.setAttribute("id","userid")
+              idCell.innerHTML = user.userID; 
+              row.appendChild(idCell);
+
+              var nameCell = document.createElement("td");
+              nameCell.innerHTML = user.username; 
+              row.appendChild(nameCell);
+
+              var emailCell = document.createElement("td");
+              emailCell.innerHTML = user.email; 
+              row.appendChild(emailCell);
+
+              var phoneCell = document.createElement("td");
+              phoneCell.innerHTML = user.phoneNumber; 
+              row.appendChild(phoneCell);
+
+              var cityCell = document.createElement("td");
+              cityCell.innerHTML = user.city; 
+              row.appendChild(cityCell);
+
+              var stateCell = document.createElement("td");
+              stateCell.innerHTML = user.state; 
+              row.appendChild(stateCell);
+
+              var passwordCell = document.createElement("td");
+              passwordCell.innerHTML = user.password; 
+              row.appendChild(passwordCell);
+
+              var editButton = document.createElement("button");
+              var editCell = document.createElement("td");
+              editCell.appendChild(editButton);
+              row.appendChild(editCell);
+              editButton.innerText = "Edit";
+              
+              editButton.addEventListener("click", () => {
+
+                const row = event.target.closest("tr");
+                const cell = row.querySelector("td");
+                const endid = cell.innerText;
+                console.log(endid)
+
+
+               var popup= document.createElement("div")
+               popup.setAttribute("id","popup")
+               popup.innerHTML=`<div id="model"><h2>Edit User</h2>
+                <label for="field-select">Choose a field:</label>
+                <select id="field-select">
+                  <option value="username">Username</option>
+                  <option value="email">Email</option>
+                  <option value="phoneNumber">Phone Number</option>
+                  <option value="city">City</option>
+                  <option value="state">State</option>
+                  <option value="password">Password</option>
+                </select>
+                <br><br>
+                <label for="field-value">New value:</label>
+                <input type="text" id="field-value">
+                <input type="hidden" id="editid" name="editid">
+                <br><br>
+                <button id="save-button" value ="submit">Save</button>
+               </div> `;
+              document.body.appendChild(popup)
+
+              
+                const savebutton = document.getElementById("save-button")
+
+                savebutton.addEventListener("click", () =>{
+                 
+                   const fieldselect=document.getElementById("field-select")
+                   const selectfield=fieldselect.value;
+                   console.log(selectfield)
+
+                   const valuefield=document.getElementById("field-value")
+                   const newvalue=valuefield.value;
+                   console.log(newvalue)  
+                  
+                  fetch(`http://localhost:8080/api/users/${endid}`, {
+                  
+                    method: 'PUT',
+                    headers: {
+                      'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                    field:selectfield,
+                    value:newvalue
+                    })
+                  
+                  })
+                  .then(response => {
+                    if (!response.ok) {
+                      
+                      throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                  })
+                  .then(data => {
+                    console.log = "User updated successfully";
+                    location.reload()
+                  })
+                  .catch(error => {
+                    console.error = `Error: ${error.message}`;
+                  });
+                  })
+              });
+                                            
+
+              var deleteButton = document.createElement("button");
+              deleteButton.innerText = "Delete";
+              deleteButton.addEventListener("click", () => {
+               
+                console.log("Delete button clicked for user with ID:", user.UserID);
+                deleted();
+              });
+              var deleteCell = document.createElement("td");
+              deleteCell.appendChild(deleteButton);
+              row.appendChild(deleteCell);
+
+              function deleted(){
+              fetch(`http://localhost:8080/api/users/${user.userID}`, {
+                  method: 'DELETE'
+                })
+                  .then((response) => {
+                    if (response.ok) {
+                      
+                      tableContainer.removeChild(row);
+                    }
+                  })
+                }
+
+              tableContainer.appendChild(row);
+            });
+          })
+          .catch(error => console.log(error));
+      
+    </script>
+    <style>
+      table{
+        width: 100%;
+        margin-top: 15vh;
+      }
+      th{
+        text-align: center ;
+        background-color: #04AA6D;
+        color: white;
+        padding: 5px;
+        border: 1px solid;
+        border-radius: 3px;
+        text-shadow: 1px 1px 2px black, 0 0 25px blue, 0 0 5px darkblue;
+
+      }
+        
+      tr:nth-child(even) {background-color: #ffffff;}
+      
+      td{
+        color:rgb(0, 0, 0);
+        text-align: center;
+        padding: 2px;
+        border: 1px solid rgba(14, 211, 96, 0.671);
+        background-color: rgb(255, 255, 255);
+        border-radius: 5px;
+      }
+   
+
+      h1{
+        border: 3px solid rgba(28, 7, 150, 0.733);
+        color: black;
+        margin-top: 5vh;
+        text-align: center;
+        background-color: rgb(255, 254, 254);
+        border-radius: 20px;
+        text-shadow: 2px 2px 5px red;
+      }
+      body{
+        background-image: url('image3.jpg');
+       background-repeat: no-repeat; 
+       background-size: cover;
+       background-attachment: fixed;
+      }
+     a{
+        color: #ad12ebfd;
+        border: 2px solid rgb(252, 250, 250);
+        padding: 10px;
+        background-color: #f1f1f1;
+        border-radius: 5px;
+        margin-top: 200px ;
+        margin-left: 200px;
+     }
+     #a{
+      margin-left: 150vh;
+      margin-top: 50px;
+
+     }
+      
+      button {
+        border: 2px solid  rgb(0, 0, 0);
+        padding: 5px;
+        background-color: rgb(255, 255, 255);
+        color:rgb(0, 0, 0);
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      button:hover{
+        background-color: #cc8782;
+        color: white;
+      }
+      
+      #popup{        
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: rgb(79, 182, 122);
+        padding: 5px;
+        border-radius: 5%;
+        text-align:  center;
+        color: #ffffff;
+        display: flex;
+      }
+
+    </style>
+</html>

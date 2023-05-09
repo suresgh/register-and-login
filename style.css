@@ -1,0 +1,42 @@
+body{
+  background-image: url('imagee1.jpeg');
+       background-repeat: no-repeat; 
+       background-size: cover;
+       background-attachment: fixed;
+ 
+}
+form {
+    width: 400px;
+    margin: 20vh auto 0 auto;
+    padding: 50px;
+    
+   
+  }
+
+  
+  input[type=text], input[type=password] {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    border-radius: 5px;
+  }
+  button {
+    background-color: black;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+  }
+  button:hover {
+    opacity: 0.8;
+
+  }
+ a {
+  color: rgb(0, 68, 255)
+ }

@@ -1,0 +1,57 @@
+body{
+    
+  background-image: url('imagee2.jpeg');
+  background-repeat: no-repeat; 
+  background-size: cover;
+  background-attachment: fixed;
+   
+   
+   }
+   form {
+       width: 400px;
+     position: fixed; left: 400px;  bottom: 10px;
+       border-radius: 5px;
+       padding: 50px;
+
+       
+      
+     }
+     input[type=email]{
+        width: 100%;
+        padding: 12px 20px;
+        margin: 8px 0;
+        display: inline-block;
+        border: 1px solid #ccc;
+        box-sizing: border-box;
+        border-radius: 5px;
+     }
+       
+     
+     input[type=text], input[type=password] {
+       width: 100%;
+       padding: 12px 20px;
+       margin: 8px 0;
+       display: inline-block;
+       border: 1px solid #ccc;
+       box-sizing: border-box;
+       border-radius: 5px;
+     }
+     button {
+       background-color: black;
+       color: white;
+       padding: 14px 20px;
+       margin: 8px 0;
+       border: none;
+       border-radius: 5px;
+       cursor: pointer;
+       width: 100%;
+     }
+     button:hover {
+       opacity: 0.8;
+   
+     }
+     a{
+      color: rgb(162, 0, 255);
+     }
+
+    

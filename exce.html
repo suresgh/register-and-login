@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Upload Excel Form</title>
+</head>
+<body>
+	<form id="formid">
+        <div id="insert">
+            <h2 id="header1"> Upload The Users</h2>
+		<label>Choose User File:</label>
+		<input type="file" id="file"><br><br>
+		<input type="button" value="Upload" id="upload">
+        <div id="result"></div>
+    </div>
+</form>
+<form>
+    <div id="deleteuser">
+        <h2>Delete The Users</h2>
+        <label>Choose User File:</label>
+        <input type="file" id="excel"><br><br>
+        <input type="button" value="Delete" id="delete">
+        <div id="result1"></div>
+    </div>
+</form>
+</body>
+<script>
+	const uploadBtn = document.getElementById('upload');
+    const result=document.getElementById('result')
+	uploadBtn.addEventListener('click', () => {
+		const formData = new FormData();
+		const userdata = document.getElementById('file').files[0];
+		formData.append("userdata", userdata);
+		fetch('http://localhost:8081/users', {
+			method: 'POST',
+			body: formData,
+		})
+		.then(response => {
+			if (!response.ok) {
+				throw new Error('Network response was not ok');
+			}
+			return response.json();
+		})
+		.then(data => {
+			result.innerHTML="Users Added Successfully";
+		})
+		.catch(error => {
+			console.log('There was a problem with the fetch operation:', error);
+		})
+	});
+
+    const deletebtn=document.getElementById('delete');
+    const result1=document.getElementById('result1')
+        deletebtn.addEventListener('click',() => {
+
+            const formData = new FormData();
+            const userdata = document.getElementById('excel').files[0];
+            formData.append("userdata", userdata);
+            fetch('http://localhost:8081/users/delete',{
+                method:'DELETE',
+                body: formData,
+            })
+
+            .then(response=> response.json())
+            .then(data => {
+                result1.innerHTML="Users Deleted Successfully"
+            })
+            .catch(error => {
+                console.error('error',error);
+            })            
+
+        })
+</script>
+
+<style>
+    #header1{
+        color: white;
+        font-size: 30px;
+    }
+    body{
+       background-image: url('image1.jpg');
+       background-repeat: no-repeat; 
+       background-size: cover;
+       background-attachment: fixed;
+       height: 100px;
+       width: 100px;
+       
+    }
+    #insert{
+        font-size: 20px;
+        width: 30%;
+        height: 50;
+        position: fixed; left:120px; top:150px;
+        color: white;
+        padding:20px;
+        border-radius: 8px;
+  
+
+    }
+    #deleteuser{
+    
+        font-size: 20px;
+        width: 30%;
+        height: 50%;
+        position: fixed; left:900px;bottom: 140px;
+        color: white;
+        padding: 20px;
+        border-radius: 8px;
+    }
+    #upload {
+        background-color: rgb(253, 253, 253);
+        color: rgb(0, 0, 0);
+        border: 2px solid green;
+        border-radius: 5px;
+        cursor: pointer;
+        padding: 5px;
+        transition-duration: 0.4s;
+        
+    }
+    #upload:hover{
+        background-color: rgb(75, 236, 26);
+    }
+    #delete{
+        background-color: rgb(255, 255, 255);
+        color: rgb(0, 0, 0);
+        border: 2px solid red;
+        border-radius: 5px;
+        cursor: pointer;
+        padding: 5px;
+        transition-duration: 0.4s;
+    }
+    #delete:hover{
+        background-color: rgb(255, 24, 24);
+    }
+    #result{
+        color: rgb(250, 250, 250);
+        font-size: 20px;
+    }
+    #result1{
+        color: aliceblue;
+        font-size: 20px;
+    }
+</style>
+
+</html>
